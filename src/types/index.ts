@@ -4,11 +4,6 @@ export type SocialLink = {
   icon: "github" | "linkedin" | "email";
 };
 
-export type NavItem = {
-  label: string;
-  href: string;
-};
-
 export type ExperienceItem = {
   company: string;
   role: string;
@@ -29,16 +24,12 @@ export type SkillCategory = {
   skills: string[];
 };
 
-export type LanguageItem = {
-  name: string;
-  level: string;
-};
-
 export type ProjectItem = {
   title: string;
   description: string;
   tags: string[];
   href?: string;
+  updatedAt?: string;
   isPlaceholder?: boolean;
 };
 

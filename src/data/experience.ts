@@ -3,11 +3,11 @@ import type { ExperienceItem } from "@/types";
 export const experience: ExperienceItem[] = [
   {
     company: "MD Partners Holding",
-    role: "BT Uzman Yardımcısı",
+    role: "IT Support Specialist",
     period: "11.2025 - Devam Ediyor",
     current: true,
     description:
-      "Bilgi Teknolojileri Uzman Yardımcısı olarak; şirket içi donanım, yazılım ve ağ altyapısının sürekliliğini sağlamak, kullanıcı destek süreçlerini yönetmek, e-posta sistemleri ve uç nokta cihazlarının kurulum, bakım ve arıza giderme işlemlerini yürütmekteyim.",
+      "IT Support Specialist olarak; şirket içi donanım, yazılım ve ağ altyapısının sürekliliğini sağlamak, kullanıcı destek süreçlerini yönetmek, e-posta sistemleri ve uç nokta cihazlarının kurulum, bakım ve arıza giderme işlemlerini yürütmekteyim.",
   },
   {
     company: "Turkcell",

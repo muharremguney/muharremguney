@@ -1,44 +1,69 @@
-import { Award } from "lucide-react";
+import { Award, Building2 } from "lucide-react";
 import { certificates } from "@/data/certificates";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Card } from "@/components/ui/Card";
-import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/ui/Reveal";
+import { TiltCard } from "@/components/ui/TiltCard";
+
+function groupByIssuer() {
+  const groups = new Map<string, typeof certificates>();
+  for (const cert of certificates) {
+    const existing = groups.get(cert.issuer);
+    if (existing) {
+      existing.push(cert);
+    } else {
+      groups.set(cert.issuer, [cert]);
+    }
+  }
+  return Array.from(groups.entries());
+}
 
 export function Certificates() {
+  const groups = groupByIssuer();
+
   return (
-    <section id="certificates" className="border-t border-border bg-card/40 py-20">
+    <div className="py-10 sm:py-14">
       <Container>
-        <SectionHeading
-          eyebrow="Sertifikalar"
-          title="Sertifikalarım"
-          description="Aşağıdaki kart örnek içeriktir; sertifikalar eklendikçe güncellenecektir."
-        />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {certificates.map((cert) => (
-            <Card
-              key={cert.title}
-              className={cn(
-                "flex items-start gap-4",
-                cert.isPlaceholder && "border-dashed"
-              )}
-            >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Award className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-foreground">
-                  {cert.title}
-                </h3>
-                <p className="text-sm text-muted">{cert.issuer}</p>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted">
-                  {cert.isPlaceholder ? "Örnek İçerik" : cert.date}
-                </p>
-              </div>
-            </Card>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Sertifikalar"
+            title="Sertifikalarım"
+            description={`${certificates.length} sertifika · ${groups.length} kurum.`}
+          />
+        </Reveal>
+
+        <div className="space-y-6">
+          {groups.map(([issuer, items], groupIndex) => (
+            <Reveal key={issuer} delay={groupIndex * 100}>
+              <TiltCard className="p-8">
+                <div className="flex items-center gap-4 border-b border-border pb-5">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Building2 className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">{issuer}</h3>
+                    <p className="text-sm text-muted">
+                      {items.length} sertifika · {items[0].date}
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {items.map((cert) => (
+                    <li
+                      key={cert.title}
+                      className="flex items-center gap-2.5 rounded-xl border border-border bg-background/60 px-3 py-2.5 transition-colors hover:border-primary"
+                    >
+                      <Award className="h-4 w-4 shrink-0 text-primary" />
+                      <span className="text-sm font-medium text-foreground">{cert.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </TiltCard>
+            </Reveal>
           ))}
         </div>
       </Container>
-    </section>
+    </div>
   );
 }

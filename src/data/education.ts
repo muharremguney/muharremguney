@@ -10,6 +10,5 @@ export const education: EducationItem[] = [
     school: "Yakacık Mesleki ve Teknik Anadolu Lisesi",
     program: "Bilişim Teknolojileri",
     period: "2015 - 2019",
-    detail: "Okul birincisi olarak mezun oldu.",
   },
 ];

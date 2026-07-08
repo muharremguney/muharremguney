@@ -1,37 +1,94 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
-import { useFormStatus } from "react-dom";
-import { submitContactForm } from "@/lib/contact/actions";
+import { useRef, useState } from "react";
+import { contactSchema } from "@/lib/contact/schema";
 import type { ContactFormState } from "@/types";
 
 const initialState: ContactFormState = { status: "idle" };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
-    >
-      {pending ? "Gönderiliyor..." : "Mesaj Gönder"}
-    </button>
-  );
-}
-
 export function ContactForm() {
-  const [state, formAction] = useActionState(submitContactForm, initialState);
+  const [state, setState] = useState<ContactFormState>(initialState);
+  const [pending, setPending] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    if (state.status === "success") {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    if (formData.get("company")) {
+      setState({ status: "success", message: "Mesajınız için teşekkürler!" });
       formRef.current?.reset();
+      return;
     }
-  }, [state.status]);
+
+    const validated = contactSchema.safeParse({
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    });
+
+    if (!validated.success) {
+      setState({
+        status: "error",
+        message: "Lütfen formu kontrol edip tekrar deneyin.",
+        errors: validated.error.flatten().fieldErrors,
+      });
+      return;
+    }
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      setState({
+        status: "error",
+        message: "Form şu anda yapılandırılmamış. Lütfen doğrudan e-posta gönderin.",
+      });
+      return;
+    }
+
+    setPending(true);
+    setState(initialState);
+
+    try {
+      formData.delete("company");
+      formData.set("name", validated.data.name);
+      formData.set("email", validated.data.email);
+      formData.set("message", validated.data.message);
+      formData.append("access_key", accessKey);
+      formData.append("subject", `Portföy sitesi | Yeni mesaj: ${validated.data.name}`);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setState({
+          status: "success",
+          message: "Mesajınız için teşekkürler! En kısa sürede size dönüş yapacağım.",
+        });
+        formRef.current?.reset();
+      } else {
+        setState({
+          status: "error",
+          message:
+            "Mesajınız gönderilemedi. Lütfen tekrar deneyin ya da doğrudan e-posta gönderin.",
+        });
+      }
+    } catch {
+      setState({
+        status: "error",
+        message:
+          "Mesajınız gönderilemedi. Lütfen tekrar deneyin ya da doğrudan e-posta gönderin.",
+      });
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-5">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
       <input
         type="text"
         name="company"
@@ -42,8 +99,11 @@ export function ContactForm() {
       />
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-foreground">
-          Ad Soyad
+        <label
+          htmlFor="name"
+          className="block font-mono text-xs uppercase tracking-wide text-muted"
+        >
+          ad_soyad
         </label>
         <input
           id="name"
@@ -60,8 +120,11 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-foreground">
-          E-posta
+        <label
+          htmlFor="email"
+          className="block font-mono text-xs uppercase tracking-wide text-muted"
+        >
+          e_posta
         </label>
         <input
           id="email"
@@ -77,8 +140,11 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-foreground">
-          Mesajınız
+        <label
+          htmlFor="message"
+          className="block font-mono text-xs uppercase tracking-wide text-muted"
+        >
+          mesaj
         </label>
         <textarea
           id="message"
@@ -94,7 +160,13 @@ export function ContactForm() {
         )}
       </div>
 
-      <SubmitButton />
+      <button
+        type="submit"
+        disabled={pending}
+        className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+      >
+        {pending ? "Gönderiliyor..." : "Mesaj Gönder"}
+      </button>
 
       {state.status !== "idle" && state.message && (
         <p

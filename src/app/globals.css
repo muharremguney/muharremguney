@@ -69,8 +69,247 @@ body {
   animation: fade-in-up 0.7s ease-out both;
 }
 
+/* --- Tech background layer --- */
+
+.tech-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  animation: grid-drift 24s linear infinite;
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 44px 44px, 44px 44px;
+  }
+}
+
+.tech-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.35;
+  animation: blob-float 18s ease-in-out infinite;
+}
+
+@keyframes blob-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(4%, 6%) scale(1.08);
+  }
+  66% {
+    transform: translate(-5%, -3%) scale(0.95);
+  }
+}
+
+.cursor-spotlight {
+  background: radial-gradient(
+    600px circle at var(--spot-x, 50%) var(--spot-y, 20%),
+    color-mix(in oklab, var(--primary) 16%, transparent),
+    transparent 65%
+  );
+  transition: opacity 0.3s ease;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 14s linear infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--primary) 0%, transparent);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* --- Scroll reveal --- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Interactive tilt/glow cards --- */
+
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.2s ease-out;
+}
+
+.tilt-card:hover {
+  box-shadow: 0 12px 30px -8px color-mix(in oklab, var(--primary) 35%, transparent);
+}
+
+.tilt-card::before,
+.tilt-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.tilt-card::before {
+  padding: 1.5px;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    var(--primary),
+    var(--accent) 40%,
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.tilt-card::after {
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--primary) 20%, transparent),
+    transparent 70%
+  );
+  z-index: -1;
+}
+
+.tilt-card:hover::before,
+.tilt-card:hover::after {
+  opacity: 1;
+}
+
+/* --- Tech marquee --- */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 26s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* --- Custom cursor --- */
+
+.custom-cursor-active,
+.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 9999px;
+  transform: translate3d(-100px, -100px, 0);
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--primary);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1.5px solid color-mix(in oklab, var(--primary) 55%, transparent);
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    margin 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.cursor-ring.cursor-ring-active {
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+  border-color: var(--primary);
+}
+
+/* --- Terminal --- */
+
+.terminal-caret {
+  display: inline-block;
+  width: 0.55ch;
+  background: var(--accent);
+  animation: caret-blink 1s step-end infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in-up {
+  .animate-fade-in-up,
+  .tech-grid,
+  .tech-blob,
+  .animate-spin-slow,
+  .animate-pulse-glow,
+  .animate-marquee,
+  .terminal-caret {
     animation: none;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .tilt-card {
+    transition: none;
   }
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { BackgroundFX } from "@/components/ui/BackgroundFX";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 import { profile } from "@/data/profile";
 import "./globals.css";
 
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
 };
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}else{document.documentElement.setAttribute("data-theme",window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}}catch(e){}})();`;
+const themeInitScript = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -58,17 +58,17 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
-      data-theme="light"
+      data-theme="dark"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="flex min-h-screen flex-col font-sans antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="h-dvh overflow-hidden font-sans antialiased">
+        <BackgroundFX />
+        <CustomCursor />
+        {children}
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import type { LanguageItem, SkillCategory } from "@/types";
+import type { SkillCategory } from "@/types";
 
 export const skillCategories: SkillCategory[] = [
   {
@@ -15,5 +15,3 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
 ];
-
-export const languages: LanguageItem[] = [{ name: "İngilizce", level: "A2 Seviye" }];
