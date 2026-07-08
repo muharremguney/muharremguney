@@ -23,6 +23,10 @@ type Topic = {
 
 const topics: Topic[] = [
   {
+    keywords: ["maymun"],
+    answer: () => "Seni çok seviyorum bitanem, iyi ki hayatımdasın.",
+  },
+  {
     keywords: ["merhaba", "selam", "hey", "gunaydin", "iyi gunler", "iyi aksamlar"],
     answer: () =>
       `Merhaba! Ben ${profile.name}'in portföy sitesindeki asistanıyım. Sadece onun deneyimi, yetenekleri, eğitimi ve projeleriyle ilgili sorulara cevap verebilirim.`,
