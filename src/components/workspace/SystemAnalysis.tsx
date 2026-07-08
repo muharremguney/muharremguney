@@ -43,10 +43,10 @@ export function SystemAnalysis() {
           sistem.log — canlı
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card, index) => (
             <Reveal key={card.label} delay={index * 80}>
-              <TiltCard className="flex items-center gap-4 p-6">
+              <TiltCard className="flex min-w-0 items-center gap-4 p-6">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                   <card.icon className="h-5 w-5" />
                 </div>

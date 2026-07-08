@@ -96,7 +96,7 @@ export function HelpdeskDemo() {
           description="Bu bir demodur — gerçek bir destek talebi oluşturulmaz, girdiğin veriler hiçbir yerde saklanmaz."
         />
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
           <TiltCard className="overflow-hidden">
             <div className="-mx-6 -mt-6 mb-6 flex items-center gap-1.5 border-b border-border bg-card/60 px-4 py-2.5">
               <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />

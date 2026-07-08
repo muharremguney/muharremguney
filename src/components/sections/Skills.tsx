@@ -26,7 +26,7 @@ export function Skills() {
           />
         </Reveal>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {skillCategories.map((category, index) => {
             const CategoryIcon = categoryIcons[category.title] ?? Code2;
             return (

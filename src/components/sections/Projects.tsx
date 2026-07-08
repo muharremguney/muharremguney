@@ -25,12 +25,12 @@ export function Projects() {
             description={`GitHub'da paylaştığım ${projects.length} proje.`}
           />
         </Reveal>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
             <Reveal key={project.title} delay={index * 100}>
               <TiltCard
                 className={cn(
-                  "flex h-full flex-col",
+                  "flex h-full min-w-0 flex-col",
                   project.isPlaceholder && "border-dashed"
                 )}
               >
@@ -52,9 +52,9 @@ export function Projects() {
                 </div>
 
                 {repoPath(project.href) && (
-                  <div className="mt-1.5 flex items-center gap-1.5 font-mono text-xs text-muted">
-                    <GithubIcon className="h-3.5 w-3.5" />
-                    <span className="truncate">{repoPath(project.href)}</span>
+                  <div className="mt-1.5 flex min-w-0 items-center gap-1.5 font-mono text-xs text-muted">
+                    <GithubIcon className="h-3.5 w-3.5 shrink-0" />
+                    <span className="min-w-0 truncate">{repoPath(project.href)}</span>
                   </div>
                 )}
 

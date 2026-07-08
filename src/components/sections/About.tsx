@@ -17,7 +17,7 @@ export function About() {
           <SectionHeading eyebrow="Hakkımda" title={profile.aboutTitle} />
         </Reveal>
 
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           <ol className="relative space-y-8 border-l border-border pl-8">
             {profile.about.map((paragraph, index) => {
               const Icon = paragraphIcons[index] ?? Target;

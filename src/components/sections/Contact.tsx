@@ -24,7 +24,7 @@ export function Contact() {
             description="Bir fırsat, proje ya da sorunuz mu var? Aşağıdaki formu doldurun ya da doğrudan e-posta gönderin."
           />
         </Reveal>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
           <div className="space-y-4">
             <Reveal>
               <TiltCard className="flex items-center gap-3">
